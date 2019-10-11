@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "element-ui": "^2.12.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
@@ -28,13 +29,21 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "browser": true
     },
     "extends": [
       "plugin:vue/essential",
       "@vue/standard"
     ],
-    "rules": {},
+    "rules": {
+      "indent": [2, 4],
+      "semi": [2, "always"],
+      "spaced-comment": 2,
+      "curly": [2, "all"],
+      "default-case": 2,
+      "id-match": 2
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
