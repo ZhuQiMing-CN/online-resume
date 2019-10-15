@@ -20,7 +20,9 @@ export default new Router({
             component: main,
             children: [
                 { path: 'resumefirst', component: () => import('./views/resumeCreate/resumeFirst') },
-                { path: 'resumesecond', component: () => import('./views/resumeCreate/resumeSecond') }
+                { path: 'resumesecond', component: () => import('./views/resumeCreate/resumeSecond') },
+                { path: 'resumethird', component: () => import('./views/resumeCreate/resumeThird') },
+                { path: 'resumefour', component: () => import('./views/resumeCreate/resumeFour') }
             ]
         }
     ]

@@ -4,121 +4,118 @@
  -->
 <template>
     <div id="resumeSecond">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" size="small">
-            <el-form-item label="活动名称" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="期望职位" prop="name1">
-                <el-cascader v-model="ruleForm.name1" :options="options" :show-all-levels="false" clearable filterable @change="handleChange" :placeholder="$t('请选择期望职位')">
-                </el-cascader>
-            </el-form-item>
-            <el-form-item label="活动区域" prop="region">
-                <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="活动时间" required>
-                <el-col :span="11">
-                    <el-form-item prop="date1">
-                        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-                    </el-form-item>
-                </el-col>
-                <el-col class="line" :span="2">-</el-col>
-                <el-col :span="11">
-                    <el-form-item prop="date2">
-                        <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-                    </el-form-item>
-                </el-col>
-            </el-form-item>
-            <el-form-item label="即时配送" prop="delivery">
-                <el-switch v-model="ruleForm.delivery"></el-switch>
-            </el-form-item>
-            <el-form-item label="活动性质" prop="type">
-                <el-checkbox-group v-model="ruleForm.type">
-                    <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-                    <el-checkbox label="地推活动" name="type"></el-checkbox>
-                    <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-                    <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-                </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="特殊资源" prop="resource">
-                <el-radio-group v-model="ruleForm.resource">
-                    <el-radio label="线上品牌商赞助"></el-radio>
-                    <el-radio label="线下场地免费"></el-radio>
-                </el-radio-group>
-            </el-form-item>
-            <el-form-item label="活动形式" prop="desc">
-                <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-                <el-button @click="resetForm('ruleForm')">重置</el-button>
-            </el-form-item>
-        </el-form>
+        <el-page-header @back="$router.go(-1)" content="基本信息"></el-page-header>
+        <div class="base-info">
+            <el-form :model="baseForm" :rules="baseRules" ref="baseForm" label-width="140px" size="medium">
+                <el-form-item label="姓名 :" prop="name">
+                    <el-input v-model.trim="baseForm.name" maxlength="5" clearable placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item label="联系电话 :" prop="phone">
+                    <el-input v-model.number="baseForm.phone" maxlength="11" clearable placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item label="期望职位 :" prop="position">
+                    <el-cascader v-model="baseForm.position" :options="positions" :props="{value: 'label'}" :show-all-levels="false" filterable placeholder="请选择">
+                    </el-cascader>
+                </el-form-item>
+                <el-form-item label="电子邮箱 :" prop="email">
+                    <el-input v-model="baseForm.email" type="email" clearable placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item label="出生年月 :" prop="birthdate">
+                    <el-date-picker v-model="baseForm.birthdate" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="工作年限 :" prop="worktime">
+                    <el-select v-model="baseForm.worktime" placeholder="请选择">
+                        <el-option label="应届生" value="0"></el-option>
+                        <el-option label="1年经验" value="1"></el-option>
+                        <el-option label="2年经验" value="2"></el-option>
+                        <el-option label="3年经验" value="3"></el-option>
+                        <el-option label="4年经验" value="4"></el-option>
+                        <el-option label="5年经验" value="5"></el-option>
+                        <el-option label="6年经验" value="6"></el-option>
+                        <el-option label="7年经验" value="7"></el-option>
+                        <el-option label="8年经验" value="8"></el-option>
+                        <el-option label="9年经验" value="9"></el-option>
+                        <el-option label="10年经验" value="10"></el-option>
+                        <el-option label="10年以上经验" value="10+"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="个人博客 :" prop="website">
+                    <el-input v-model="baseForm.website" type="url" clearable placeholder="https://www.zhuqiming.cn"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="$router.go(-1)">上一步</el-button>
+                    <el-button type="primary" @click="submitBaseForm('baseForm')">下一步</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
     </div>
 </template>
 
 <script>
 import { position } from '../../data/position';
+import { mapMutations } from 'vuex';
 
 export default {
     data () {
         return {
-            options: position,
-            ruleForm: {
+            positions: position,
+            baseForm: {
                 name: '',
-                name1: '',
-                region: '',
-                date1: '',
-                date2: '',
-                delivery: false,
-                type: [],
-                resource: '',
-                desc: ''
+                phone: '',
+                position: '',
+                email: '',
+                birthdate: '',
+                worktime: '',
+                website: ''
             },
-            rules: {
+            baseRules: {
                 name: [
-                    { required: true, message: '请输入活动名称', trigger: 'blur' },
-                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                    { required: true, message: '请输入姓名', trigger: 'blur' },
+                    { min: 2, max: 5, message: '姓名在 2 到 5 个字符', trigger: 'blur' }
                 ],
-                region: [
-                    { required: true, message: '请选择活动区域', trigger: 'change' }
+                phone: [
+                    { type: 'number', required: true, message: '请输入联系电话', trigger: 'blur' }
                 ],
-                date1: [
-                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                position: [
+                    { required: true, message: '请选择期望职位', trigger: 'change' }
                 ],
-                date2: [
-                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                email: [
+                    { type: 'email', required: true, message: '请输入电子邮箱', trigger: 'blur' }
                 ],
-                type: [
-                    { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+                birthdate: [
+                    { required: true, message: '请选择出生年月', trigger: 'change' }
                 ],
-                resource: [
-                    { required: true, message: '请选择活动资源', trigger: 'change' }
+                worktime: [
+                    { required: true, message: '请选择工作年限', trigger: 'change' }
                 ],
-                desc: [
-                    { required: true, message: '请填写活动形式', trigger: 'blur' }
+                website: [
+                    { type: 'url', message: '请输入个人博客地址', trigger: 'blur' }
                 ]
             }
         };
     },
+    created () {
+        let resumeInfo = this.$store.state.resumeInfo;
+        if (JSON.stringify(resumeInfo) !== '{}' && resumeInfo.baseInfo) {
+            this.baseForm = resumeInfo.baseInfo;
+        }
+    },
     methods: {
-        submitForm (formName) {
+        ...mapMutations([
+            'setResumeInfo'
+        ]),
+        // 下一步
+        submitBaseForm (formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    alert('submit!');
+                    let resumeInfo = this.$store.state.resumeInfo;
+                    resumeInfo.baseInfo = this.baseForm;
+                    this.setResumeInfo(resumeInfo);
+                    this.$router.push(`/resumethird?step=3`);
                 } else {
-                    console.log('error submit!!');
                     return false;
                 }
             });
-        },
-        resetForm (formName) {
-            this.$refs[formName].resetFields();
-        },
-        handleChange (value) {
-            console.log(value);
         }
     }
 };
@@ -126,7 +123,13 @@ export default {
 
 <style lang="less" scoped>
     #resumeSecond {
-        width: 1300px;
-        margin: 0 auto;
+        .base-info {
+            width: 960px;
+            margin: 0 auto;
+            padding-top: 40px;
+            /deep/ .el-input {
+                width: 450px;
+            }
+        }
     }
 </style>

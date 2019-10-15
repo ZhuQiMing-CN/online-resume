@@ -6,7 +6,7 @@
     <div id="resumeFirst">
         <div class="resume-template">
             <div class="template-list" v-for="(template, index) in templateList" :key="index">
-                <el-card shadow="hover">
+                <el-card shadow="hover" :class="{'el-card-select': template.id == templateId}">
                     <img :src="template.url" width="235px">
                     <div>
                         <p>{{template.name}}</p>
@@ -20,9 +20,11 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
     data () {
         return {
+            templateId: '',
             templateList: [
                 {
                     id: 1,
@@ -42,10 +44,22 @@ export default {
             ]
         };
     },
+    created () {
+        let resumeInfo = this.$store.state.resumeInfo;
+        if (JSON.stringify(resumeInfo) !== '{}') {
+            this.templateId = resumeInfo.templateId;
+        }
+    },
     methods: {
+        ...mapMutations([
+            'setResumeInfo'
+        ]),
         // 开始编辑
         beginEdit (template) {
-            this.$router.push(`/resumesecond?step=2&id=${template.id}`);
+            let resumeInfo = this.$store.state.resumeInfo;
+            resumeInfo.templateId = template.id;
+            this.setResumeInfo(resumeInfo);
+            this.$router.push(`/resumesecond?step=2`);
         }
     }
 };
@@ -54,8 +68,6 @@ export default {
 <style lang="less" scoped>
     #resumeFirst {
         .resume-template {
-            width: 1300px;
-            margin: 0 auto;
             display: flex;
             flex-flow: wrap;
             justify-content: center;
@@ -67,6 +79,9 @@ export default {
                 .el-card:hover {
                     border: 2px solid #00C091;
                 }
+            }
+            .el-card-select {
+                border: 2px solid #00C091!important;
             }
         }
     }

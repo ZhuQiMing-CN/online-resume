@@ -2,7 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
-      <el-button type="success" @click="beginStep">开始填写</el-button>
+      <el-button type="primary" @click="beginStep">开始填写</el-button>
   </div>
 </template>
 
