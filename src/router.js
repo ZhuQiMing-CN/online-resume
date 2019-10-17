@@ -22,7 +22,11 @@ export default new Router({
                 { path: 'resumefirst', component: () => import('./views/resumeCreate/resumeFirst') },
                 { path: 'resumesecond', component: () => import('./views/resumeCreate/resumeSecond') },
                 { path: 'resumethird', component: () => import('./views/resumeCreate/resumeThird') },
-                { path: 'resumefour', component: () => import('./views/resumeCreate/resumeFour') }
+                { path: 'resumefour', component: () => import('./views/resumeCreate/resumeFour') },
+                { path: 'resumefifth', component: () => import('./views/resumeCreate/resumeFifth') },
+                { path: 'resumesixth', component: () => import('./views/resumeCreate/resumeSixth') },
+                { path: 'resumeseventh', component: () => import('./views/resumeCreate/resumeSeventh') },
+                { path: 'resumepreview', component: () => import('./views/resumePreview/resumePreview') }
             ]
         }
     ]

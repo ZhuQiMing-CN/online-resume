@@ -17,11 +17,11 @@
                 </el-form-item>
                 <el-form-item label="入职时间 :" prop="entrytime">
                     <el-select v-model="expectForm.entrytime" placeholder="请选择">
-                        <el-option label="随时到岗" value="0"></el-option>
-                        <el-option label="1周内到岗" value="1"></el-option>
-                        <el-option label="1个月内到岗" value="2"></el-option>
-                        <el-option label="3个月内到岗" value="3"></el-option>
-                        <el-option label="到岗时间另议" value="4"></el-option>
+                        <el-option label="随时到岗" value="随时到岗"></el-option>
+                        <el-option label="1周内到岗" value="1周内到岗"></el-option>
+                        <el-option label="1个月内到岗" value="1个月内到岗"></el-option>
+                        <el-option label="3个月内到岗" value="3个月内到岗"></el-option>
+                        <el-option label="到岗时间另议" value="到岗时间另议"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="薪资要求 :" prop="salaryfrom" class="salary-input">
@@ -94,9 +94,9 @@ export default {
     created () {
         let resumeInfo = this.$store.state.resumeInfo;
         if (JSON.stringify(resumeInfo) !== '{}') {
-            if (resumeInfo.expectForm) {
-                this.expectForm = resumeInfo.expectForm;
-                let val = resumeInfo.expectForm.salaryfrom;
+            if (resumeInfo.expectInfo) {
+                this.expectForm = resumeInfo.expectInfo;
+                let val = resumeInfo.expectInfo.salaryfrom;
                 let salarytoList = [];
                 if (val < 10) {
                     for (let i = val + 1; i <= val * 2; i++) {
@@ -158,7 +158,7 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     let resumeInfo = this.$store.state.resumeInfo;
-                    resumeInfo.expectForm = this.expectForm;
+                    resumeInfo.expectInfo = this.expectForm;
                     resumeInfo.baseInfo.position = this.expectForm.position;
                     this.setResumeInfo(resumeInfo);
                     this.$router.push(`/resumefour?step=4`);
