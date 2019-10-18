@@ -4,6 +4,7 @@
  */
 import html2canvas from 'html2canvas';
 import JsPdF from 'jspdf';
+import canvg from 'canvg';
 
 // 下载PDF
 export function downloadPDF (ele, username) {
@@ -41,11 +42,30 @@ export function downloadPDF (ele, username) {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
 
-    // html2canvas(element).then( (canvas)=>{ //报错
-    // html2canvas(element[0]).then( (canvas)=>{
+    // 以下是对svg的处理
+    var svgElem = ele.querySelectorAll('svg');// 需要截取成图片的dom
+    svgElem.forEach(node => {
+        var parentNode = node.parentNode;
+        var svg = node.outerHTML.trim();
+
+        var canvas = document.createElement('canvas');
+        canvas.width = 100;
+        canvas.height = 100;
+        canvas.style.width = '100px';
+        canvas.style.height = '100px';
+        canvg(canvas, svg);
+        if (node.style.position) {
+            canvas.style.position += node.style.position;
+            canvas.style.left += node.style.left;
+            canvas.style.top += node.style.top;
+        }
+        parentNode.removeChild(node);
+        parentNode.appendChild(canvas);
+    });
+
     html2canvas(ele, {
         dpi: 300,
-        // allowTaint: true,  //允许 canvas 污染， allowTaint参数要去掉，否则是无法通过toDataURL导出canvas数据的
+        allowTaint: true, // 允许 canvas 污染， allowTaint参数要去掉，否则是无法通过toDataURL导出canvas数据的
         useCORS: true // 允许canvas画布内 可以跨域请求外部链接图片, 允许跨域请求。
         //   windowWidth: ele.scrollWidth,
         //   windowHeight: ele.scrollHeight

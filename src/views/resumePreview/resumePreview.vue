@@ -7,27 +7,40 @@
         <el-page-header @back="$router.go(-1)" content="简历预览"></el-page-header>
         <div class="resume-data">
             <h3>{{baseInfo.name}}</h3>
-            <span>一句话介绍自己，告诉HR为什么选择你而不是别人</span>
+            <span v-if="baseInfo.introduce" class="introduce">{{baseInfo.introduce}}</span>
             <div class="base-info">
                 <h4>基本信息</h4>
                 <p>
-                    {{baseInfo.age}} 岁 |
-                    {{baseInfo.worktime}} 年工作经验 |
-                    {{baseInfo.phone}} |
-                    {{baseInfo.email}} |
-                    {{baseInfo.website}}
+                    <span>{{baseInfo.sex}}</span> |
+                    <span>{{baseInfo.age}} 岁</span> |
+                    <span>{{baseInfo.worktime}} 年工作经验 </span> |
+                    <span>{{baseInfo.phone}}</span> |
+                    <span>{{baseInfo.email}}</span>
                 </p>
+                <p v-if="baseInfo.website">个人博客 : {{baseInfo.website}}</p>
             </div>
-            <div>
+            <div class="expect-info">
                 <h4>求职意向</h4>
                 <p>
-                    <i class="el-icon-suitcase"></i> {{expectInfo.position[2]}}
-                    <i class="el-icon-office-building"></i> {{expectInfo.city[1]}}
-                    <i class="el-icon-time"></i> {{expectInfo.entrytime}}
-                    <i class="el-icon-money"></i> {{expectInfo.salaryfrom}}K ~ {{expectInfo.salaryto}}K
+                    <span>
+                        <i class="el-icon-suitcase"></i>
+                        {{expectInfo.position[2]}}
+                    </span>
+                    <span>
+                        <i class="el-icon-office-building"></i>
+                        {{expectInfo.city[1]}}
+                    </span>
+                    <span>
+                        <i class="el-icon-time"></i>
+                        {{expectInfo.entrytime}}
+                    </span>
+                    <span>
+                        <i class="el-icon-money"></i>
+                        {{expectInfo.salaryfrom}}K ~ {{expectInfo.salaryto}}K
+                    </span>
                 </p>
             </div>
-            <div>
+            <div class="educate-info">
                 <h4>教育背景</h4>
                 <div v-for="(item, key) in educateInfo.educateList" :key="key">
                     <span>{{item.dates[0]}} 至 {{item.dates[1]}}</span>
@@ -36,18 +49,18 @@
                     <span>{{item.major}}</span>
                 </div>
             </div>
-            <div>
+            <div class="experience-info">
                 <h4>工作经验</h4>
                 <div v-for="(item, key) in experienceInfo.experienceList" :key="key">
                     <span>{{item.worktime[0]}} 至 {{item.worktime[1]}}</span>
                     <span>{{item.company}}</span>
                     <span>{{item.position}}</span>
-                    <span>{{item.remark}}</span>
+                    <p>{{item.remark}}</p>
                 </div>
             </div>
-            <div>
+            <div class="skills-info">
                 <h4>技能特长</h4>
-                <div style="display: flex">
+                <div class="skill-list">
                     <div v-for="(item, key) in skillsInfo" :key="key">
                         <el-progress type="circle" :percentage="item.level" :width="100"></el-progress>
                         <el-badge :value="item.levelName" type="primary">
@@ -56,15 +69,17 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="evaluate-info">
                 <h4>自我评价</h4>
                 <div>
                     {{evaluateInfo}}
                 </div>
             </div>
         </div>
-        <el-button type="danger" size="mini" @click="handleDownPdf">PDF 下载</el-button>
-        <el-button type="danger" size="mini" @click="handleWindowPrint">PDF 打印</el-button>
+        <div class="resume-btn">
+            <el-button type="danger" size="small" plain @click="handleDownPdf">简历下载</el-button>
+            <el-button type="danger" size="small" @click="handleWindowPrint">在线打印</el-button>
+        </div>
     </div>
 </template>
 
@@ -98,11 +113,11 @@ export default {
     methods: {
         // 下载PDF文件
         handleDownPdf () {
-            downloadPDF(document.querySelector('.resumeData'), this.resumeData.baseInfo.name);
+            downloadPDF(document.querySelector('.resume-data'), this.baseInfo.name);
         },
         // 浏览器方式打印
         handleWindowPrint () {
-            document.body.innerHTML = document.querySelector('.resumeData').outerHTML;
+            document.body.innerHTML = document.querySelector('.resume-data').outerHTML;
             setTimeout(() => {
                 window.print();
                 window.location.reload();
@@ -120,6 +135,10 @@ export default {
             padding: 20px;
             margin: 20px 0px;
             background-color: #FFFFFF;
+        }
+        .resume-btn {
+            text-align: center;
+            margin-bottom: 20px;
         }
     }
 </style>

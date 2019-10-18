@@ -10,6 +10,12 @@
                 <el-form-item label="姓名 :" prop="name">
                     <el-input v-model.trim="baseForm.name" maxlength="5" clearable placeholder="请输入"></el-input>
                 </el-form-item>
+                <el-form-item label="性别 :" prop="sex">
+                    <el-radio-group v-model="baseForm.sex">
+                        <el-radio label="男"></el-radio>
+                        <el-radio label="女"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
                 <el-form-item label="联系电话 :" prop="phone">
                     <el-input v-model.number="baseForm.phone" maxlength="11" clearable placeholder="请输入"></el-input>
                 </el-form-item>
@@ -18,7 +24,7 @@
                     </el-cascader>
                 </el-form-item>
                 <el-form-item label="电子邮箱 :" prop="email">
-                    <el-input v-model="baseForm.email" type="email" clearable placeholder="请输入"></el-input>
+                    <el-input v-model.trim="baseForm.email" type="email" clearable placeholder="请输入"></el-input>
                 </el-form-item>
                 <el-form-item label="出生年月 :" prop="birthdate">
                     <el-date-picker v-model="baseForm.birthdate" type="date" value-format="yyyy-MM-dd" placeholder="请选择"></el-date-picker>
@@ -40,7 +46,10 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="个人博客 :" prop="website">
-                    <el-input v-model="baseForm.website" type="url" clearable placeholder="https://www.zhuqiming.cn"></el-input>
+                    <el-input v-model.trim="baseForm.website" type="url" maxlength="20" clearable placeholder="https://www.zhuqiming.cn"></el-input>
+                </el-form-item>
+                <el-form-item label="简单介绍 :" prop="introduce">
+                    <el-input v-model.trim="baseForm.introduce" type="textarea" maxlength="30" clearable placeholder="一句话介绍自己，告诉HR为什么选择你而不是别人"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="$router.go(-1)">上一步</el-button>
@@ -61,17 +70,22 @@ export default {
             positions: position,
             baseForm: {
                 name: '',
+                sex: '',
                 phone: '',
                 position: '',
                 email: '',
                 birthdate: '',
                 worktime: '',
-                website: ''
+                website: '',
+                introduce: ''
             },
             baseRules: {
                 name: [
                     { required: true, message: '请输入姓名', trigger: 'blur' },
                     { min: 2, max: 5, message: '姓名在 2 到 5 个字符', trigger: 'blur' }
+                ],
+                sex: [
+                    { required: true, message: '请选择性别', trigger: 'change' }
                 ],
                 phone: [
                     { type: 'number', required: true, message: '请输入联系电话', trigger: 'blur' }
@@ -127,7 +141,7 @@ export default {
             width: 960px;
             margin: 0 auto;
             padding-top: 40px;
-            /deep/ .el-input {
+            /deep/ .el-input, .el-textarea {
                 width: 450px;
             }
         }
