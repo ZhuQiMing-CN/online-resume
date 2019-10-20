@@ -6,7 +6,7 @@
     <div id="resumeSeventh">
         <el-page-header @back="$router.go(-1)" content="自我评价"></el-page-header>
         <div class="evaluate-info">
-            <span>此项为非必选项，根据实际情况填写</span>
+            <span class="evaluate-tip">此项为非必选项，根据实际情况填写</span>
             <el-input type="textarea" v-model="evaluate" :autosize="{minRows: 10}" resize="none" maxlength="800" show-word-limit :placeholder="placeholder"></el-input>
             <div class="evaluate-demo">
                 <el-carousel trigger="click" height="280px" indicator-position="none">
@@ -77,6 +77,12 @@ export default {
             width: 846px;
             margin: 0 auto;
             padding-top: 40px;
+            .evaluate-tip {
+                color: #F56C6C;
+                font-size: 14px;
+                padding-bottom: 5px;
+                display: inline-block;
+            }
             .evaluate-btn {
                 margin: 22px 0px;
             }

@@ -6,14 +6,15 @@
     <div id="resumePreview">
         <el-page-header @back="$router.go(-1)" content="简历预览"></el-page-header>
         <div class="resume-data">
-            <h3>{{baseInfo.name}}</h3>
+            <h3 class="user-name">{{baseInfo.name}}</h3>
             <span v-if="baseInfo.introduce" class="introduce">{{baseInfo.introduce}}</span>
             <div class="base-info">
-                <h4>基本信息</h4>
+                <h4 v-if="templateId !== 2">基本信息</h4>
                 <p>
                     <span>{{baseInfo.sex}}</span> |
                     <span>{{baseInfo.age}} 岁</span> |
-                    <span>{{baseInfo.worktime}} 年工作经验 </span> |
+                    <span v-if="baseInfo.worktime==0">应届生</span>
+                    <span v-else>{{baseInfo.worktime}} 年工作经验 </span> |
                     <span>{{baseInfo.phone}}</span> |
                     <span>{{baseInfo.email}}</span>
                 </p>
@@ -34,13 +35,17 @@
                         <i class="el-icon-time"></i>
                         {{expectInfo.entrytime}}
                     </span>
-                    <span>
+                    <span v-if="expectInfo.salaryfrom!==0">
                         <i class="el-icon-money"></i>
                         {{expectInfo.salaryfrom}}K ~ {{expectInfo.salaryto}}K
                     </span>
+                    <span v-else>
+                        <i class="el-icon-money"></i>
+                        面议
+                    </span>
                 </p>
             </div>
-            <div class="educate-info">
+            <div class="educate-info" v-if="educateInfo.educateList.length > 0">
                 <h4>教育背景</h4>
                 <div v-for="(item, key) in educateInfo.educateList" :key="key">
                     <span>{{item.dates[0]}} 至 {{item.dates[1]}}</span>
@@ -49,7 +54,7 @@
                     <span>{{item.major}}</span>
                 </div>
             </div>
-            <div class="experience-info">
+            <div class="experience-info" v-if="experienceInfo.experienceList.length > 0">
                 <h4>工作经验</h4>
                 <div v-for="(item, key) in experienceInfo.experienceList" :key="key">
                     <span>{{item.worktime[0]}} 至 {{item.worktime[1]}}</span>
@@ -62,14 +67,17 @@
                 <h4>技能特长</h4>
                 <div class="skill-list">
                     <div v-for="(item, key) in skillsInfo" :key="key">
-                        <el-progress type="circle" :percentage="item.level" :width="100"></el-progress>
-                        <el-badge :value="item.levelName" type="primary">
-                            {{item.name}}
-                        </el-badge>
+                        <el-tag  v-if="templateId == 2">{{item.name}}</el-tag>
+                        <div v-else>
+                            <el-progress type="circle" :percentage="item.level" :width="100"></el-progress>
+                            <el-badge :value="item.levelName" type="primary">
+                                {{item.name}}
+                            </el-badge>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="evaluate-info">
+            <div class="evaluate-info" v-if="evaluateInfo">
                 <h4>自我评价</h4>
                 <div>
                     {{evaluateInfo}}
@@ -88,6 +96,7 @@ import { downloadPDF, countAge } from '../../utils/util';
 export default {
     data () {
         return {
+            templateId: '',
             baseInfo: {},
             expectInfo: {},
             educateInfo: {},
@@ -99,7 +108,7 @@ export default {
     created () {
         let resumeInfo = this.$store.state.resumeInfo;
         if (JSON.stringify(resumeInfo) !== '{}') {
-            let templateId = resumeInfo.templateId;
+            this.templateId = resumeInfo.templateId;
             this.baseInfo = resumeInfo.baseInfo;
             this.baseInfo.age = countAge(resumeInfo.baseInfo.birthdate);
             this.expectInfo = resumeInfo.expectInfo;
@@ -107,7 +116,7 @@ export default {
             this.experienceInfo = resumeInfo.experienceInfo;
             this.skillsInfo = resumeInfo.skillsInfo;
             this.evaluateInfo = resumeInfo.evaluateInfo;
-            require(`./template_less/template_${templateId}.less`);
+            require(`./template_less/template_${this.templateId}.less`);
         }
     },
     methods: {

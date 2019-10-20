@@ -28,6 +28,16 @@
                     <el-form-item label="专业名称 :" :prop="`educateList.${key}.major`" :rules="educateRules.major">
                         <el-input v-model="item.major" maxlength="10" clearable placeholder="请输入"></el-input>
                     </el-form-item>
+                    <div class="del-more">
+                        <el-popover placement="top" width="160" v-model="item.visible">
+                            <p>确定删除这条教育背景？</p>
+                            <div style="text-align: right;">
+                                <el-button size="mini" type="text" @click="item.visible = false">取消</el-button>
+                                <el-button type="primary" size="mini" @click="delMoreEducate(item)">确定</el-button>
+                            </div>
+                            <el-button slot="reference" type="text" size="mini" icon="el-icon-delete">删除</el-button>
+                        </el-popover>
+                    </div>
                 </div>
                 <div class="add-more">
                     <el-button type="primary" size="small" icon="el-icon-edit" @click="addMoreEducate">添加更多</el-button>
@@ -50,7 +60,7 @@ export default {
             schools: school,
             educateForm: {
                 educateList: [
-                    { degree: '', dates: '', school: '', major: '' }
+                    { degree: '', dates: '', school: '', major: '', visible: false }
                 ]
             },
             educateRules: {
@@ -91,13 +101,21 @@ export default {
                 return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
             };
         },
+        // 删除更多教育背景
+        delMoreEducate (item) {
+            let index = this.educateForm.educateList.indexOf(item);
+            if (index !== -1) {
+                this.educateForm.educateList.splice(index, 1);
+            }
+        },
         // 添加更多教育背景
         addMoreEducate () {
             this.educateForm.educateList.push({
                 degree: '',
                 dates: '',
                 school: '',
-                major: ''
+                major: '',
+                visible: false
             });
         },
         // 下一步
@@ -139,6 +157,12 @@ export default {
             }
             .educational-list:first-child {
                 margin-top: 0px;
+            }
+            .del-more {
+                text-align: right;
+                .el-button {
+                    color: #F56C6C;
+                }
             }
             .add-more {
                 text-align: right;

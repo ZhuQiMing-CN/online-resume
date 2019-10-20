@@ -1,25 +1,57 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-      <el-button type="primary" @click="beginStep">开始填写</el-button>
-  </div>
+    <div id="home">
+        <h2>欢迎使用简历在线编辑系统</h2>
+        <div class="image-lazy">
+            <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image>
+        </div>
+        <el-button type="primary" size="medium" @click="beginStep">开始体验</el-button>
+    </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
-
+import { mapMutations } from 'vuex';
 export default {
-    name: 'home',
-    components: {
-        HelloWorld
+    data () {
+        return {
+            urls: [
+                'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+                'https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg',
+                'https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg',
+                'https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg',
+                'https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg',
+                'https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg',
+                'https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg'
+            ]
+        };
     },
     methods: {
-        // 开始填写
+        ...mapMutations([
+            'setResumeInfo'
+        ]),
+        // 开始体验
         beginStep () {
+            let resumeInfo = {};
+            this.setResumeInfo(resumeInfo);
             this.$router.push('/resumefirst?step=1');
         }
     }
 };
 </script>
+
+<style lang="less" scoped>
+    #home {
+        width: 846px;
+        margin: 0 auto;
+        text-align: center;
+        .image-lazy {
+            height: 500px;
+            overflow-y: auto;
+            margin-bottom: 40px;
+            .el-image {
+                display: block;
+                min-height: 200px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+</style>

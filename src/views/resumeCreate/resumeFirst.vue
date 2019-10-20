@@ -4,6 +4,7 @@
  -->
 <template>
     <div id="resumeFirst">
+        <el-divider>请先选择简历模板样式</el-divider>
         <div class="resume-template">
             <div class="template-list" v-for="(template, index) in templateList" :key="index">
                 <el-card shadow="hover" :class="{'el-card-select': template.id == templateId}">
@@ -15,7 +16,6 @@
                 </el-card>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -28,18 +28,13 @@ export default {
             templateList: [
                 {
                     id: 1,
-                    name: '精简1',
+                    name: '模板1',
                     url: require('../../assets/img/template/template_01.png')
                 },
                 {
                     id: 2,
-                    name: '精简2',
-                    url: require('../../assets/img/template/template_01.png')
-                },
-                {
-                    id: 3,
-                    name: '精简3',
-                    url: require('../../assets/img/template/template_01.png')
+                    name: '模板2',
+                    url: require('../../assets/img/template/template_02.png')
                 }
             ]
         };
