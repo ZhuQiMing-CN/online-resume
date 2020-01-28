@@ -3,12 +3,12 @@
 本项目纯属共享学习之用，有任何疑问或建议可提 issue，代码中已经配置好代理，clone 后本地可以完美运行。
 
 ## 预览地址
-[在线预览地址]( https://jailbreak2017.github.io/online-resume/dist )
+[在线预览地址](  https://zhuqiming-cn.github.io/online-resume/dist )
 ## 本地运行
 
 ``` bash
 # clone project
-git clone git@github.com:Jailbreak2017/online-resume.git
+git clone git@github.com:ZhuQiMing-CN/online-resume.git
 cd online-resume
 
 # install dependencies
